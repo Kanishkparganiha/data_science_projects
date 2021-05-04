@@ -1,0 +1,69 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+
+```{r}
+df<-read.csv('~/data_science/PythonCode/data.csv')
+head(df)
+
+```
+
+```{r message=FALSE}
+
+library(dplyr)
+library(tidyr)
+library(tidyverse)
+str(df)
+
+select(df,month,species,genus)
+
+colnames(df)
+
+select(df,-year)
+
+filter(df,year<1978)
+
+df%>%filter(record_id<=10)%>%select(record_id,genus,species)
+
+df%>%filter(year<1995)%>%select(year,sex,weight)
+
+
+df%>%filter(!is.na(sex))%>%mutate(year_deci=year/1000)%>%head()
+
+df%>%mutate(hindfoot_cm=hindfoot_length/10)%>%filter(!is.na(hindfoot_cm) & hindfoot_cm<3)%>%select(species_id,hindfoot_cm)
+
+df%>%group_by(sex,species_id)%>%summarise(mean_weight=mean(weight,na.rm=TRUE))%>%filter(!is.na(mean_weight) & sex!='')%>%arrange(desc(mean_weight))
+
+df%>%group_by(species_id)%>%summarise(count=n())
+
+df %>%
+  count(sex, species) %>%
+  arrange(species, desc(n))
+
+df %>%
+  count( species) %>%
+  arrange(species, desc(n))
+
+df%>%group_by(plot_type)%>%summarise(count=n())
+
+df%>%filter(!is.na(hindfoot_length))%>%group_by(species_id)%>%summarise(mean_hindfoot=mean(hindfoot_length),max_hindfoot=max(hindfoot_length),min_hindfoot=min(hindfoot_length))
+
+df%>%filter(!is.na(weight))%>%group_by(year)%>%filter(weight==max(weight))%>%select(year,genus,species,weight)%>%arrange(year)
+
+df %>%
+    filter(!is.na(weight)) %>%
+    group_by(year) %>%
+    filter(weight == max(weight)) %>%
+    select(year, genus, species, weight) %>%
+    arrange(year)
+
+
+head(df)
+```
+
+
+
+
